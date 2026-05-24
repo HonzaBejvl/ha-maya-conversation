@@ -1,4 +1,4 @@
-"""Conversation platform for Maya via Jarvis."""
+"""Conversation platform for Maya Conversation."""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Maya via Jarvis conversation entities."""
+    """Set up Maya Conversation entities."""
     async_add_entities([MayaConversationEntity(hass, entry)])
 
 
@@ -69,7 +69,7 @@ class MayaConversationEntity(conversation.ConversationEntity):
     _attr_should_poll = False
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
-        """Initialize the Maya via Jarvis conversation entity."""
+        """Initialize the Maya Conversation entity."""
         self.hass = hass
         self._entry = entry
         self._attr_unique_id = entry.entry_id
@@ -138,7 +138,7 @@ class MayaConversationEntity(conversation.ConversationEntity):
                 if response.status >= 400:
                     text = await response.text()
                     _LOGGER.warning(
-                        "Maya via Jarvis failed with HTTP %s: %s",
+                        "Maya Conversation failed with HTTP %s: %s",
                         response.status,
                         text[:500],
                     )
@@ -152,7 +152,7 @@ class MayaConversationEntity(conversation.ConversationEntity):
 
                 jarvis_data = await response.json(content_type=None)
         except (asyncio.TimeoutError, TimeoutError):
-            _LOGGER.warning("Maya via Jarvis timed out after %s seconds", timeout)
+            _LOGGER.warning("Maya Conversation timed out after %s seconds", timeout)
             return self._result_with_speech(
                 user_input,
                 chat_log,
@@ -161,7 +161,7 @@ class MayaConversationEntity(conversation.ConversationEntity):
                 continue_conversation=False,
             )
         except (ClientError, ValueError, TypeError) as err:
-            _LOGGER.warning("Maya via Jarvis request failed: %s", err)
+            _LOGGER.warning("Maya Conversation request failed: %s", err)
             return self._result_with_speech(
                 user_input,
                 chat_log,
@@ -177,7 +177,7 @@ class MayaConversationEntity(conversation.ConversationEntity):
             .get("speech")
         )
         if not speech:
-            _LOGGER.warning("Maya via Jarvis response did not include speech")
+            _LOGGER.warning("Maya Conversation response did not include speech")
             return self._result_with_speech(
                 user_input,
                 chat_log,

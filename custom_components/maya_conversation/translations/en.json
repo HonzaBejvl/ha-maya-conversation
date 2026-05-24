@@ -2,8 +2,8 @@
   "config": {
     "step": {
       "user": {
-        "title": "Maya via Jarvis",
-        "description": "Connect a Home Assistant Assist conversation agent to Maya via Jarvis Brain.",
+        "title": "Maya Conversation",
+        "description": "Connect a Home Assistant Assist conversation agent to Maya through a Jarvis Brain-compatible backend.",
         "data": {
           "url": "Jarvis Brain URL",
           "token": "Jarvis Voice Token",
@@ -18,7 +18,7 @@
       "unknown": "Unexpected error."
     },
     "abort": {
-      "already_configured": "This Maya via Jarvis agent is already configured."
+      "already_configured": "This Maya Conversation agent is already configured."
     }
   }
 }

@@ -1,9 +1,9 @@
-"""Constants for the Maya via Jarvis conversation integration."""
+"""Constants for the Maya Conversation integration."""
 
 from __future__ import annotations
 
 DOMAIN = "maya_conversation"
-NAME = "Maya via Jarvis"
+NAME = "Maya Conversation"
 
 CONF_AGENT = "agent"
 CONF_TOKEN = "token"

@@ -1,4 +1,4 @@
-"""Maya via Jarvis conversation integration."""
+"""Maya Conversation integration."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ PLATFORMS: list[Platform] = [Platform.CONVERSATION]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Maya via Jarvis from a config entry."""
+    """Set up Maya Conversation from a config entry."""
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload Maya via Jarvis config entry."""
+    """Unload Maya Conversation config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

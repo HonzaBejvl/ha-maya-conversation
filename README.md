@@ -1,4 +1,4 @@
-# Maya via Jarvis for Home Assistant
+# Maya Conversation for Home Assistant
 
 `maya_conversation` is a Home Assistant custom integration that registers a
 conversation agent for Assist and forwards each turn to a Jarvis Brain voice
@@ -26,7 +26,7 @@ The repository layout is HACS-ready:
 
 ## What It Does
 
-- Adds a selectable Assist conversation agent named `Maya via Jarvis`
+- Adds a selectable Assist conversation agent named `Maya Conversation`
 - Sends each Assist turn to `POST /api/voice/{agent}/conversation` on Jarvis Brain
 - Returns Jarvis speech back to Home Assistant
 - Passes through `conversationId`, `language`, `deviceId`, and
@@ -69,7 +69,7 @@ repository:
 2. Add a custom repository.
 3. Repository: `https://github.com/HonzaBejvl/ha-maya-conversation`
 4. Category: `Integration`
-5. Install `Maya via Jarvis` and restart Home Assistant.
+5. Install `Maya Conversation` and restart Home Assistant.
 
 After restart, add the integration from `Settings -> Devices & Services`.
 
@@ -83,13 +83,13 @@ After restart, add the integration from `Settings -> Devices & Services`.
 
 2. Restart Home Assistant.
 3. Go to `Settings -> Devices & Services -> Add Integration`.
-4. Search for `Maya via Jarvis`.
+4. Search for `Maya Conversation`.
 5. Enter:
    - Jarvis Brain URL
    - Jarvis Voice Token
    - Agent slug, usually `maya`
    - Timeout in seconds
-6. In Assist, select the `Maya via Jarvis` conversation agent.
+6. In Assist, select the `Maya Conversation` conversation agent.
 
 ## Jarvis Prerequisites
 

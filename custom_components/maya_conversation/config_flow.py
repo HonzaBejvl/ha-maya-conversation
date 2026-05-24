@@ -1,4 +1,4 @@
-"""Config flow for the Maya via Jarvis conversation integration."""
+"""Config flow for the Maya Conversation integration."""
 
 from __future__ import annotations
 
@@ -21,6 +21,7 @@ from .const import (
     DEFAULT_AGENT,
     DEFAULT_TIMEOUT,
     DOMAIN,
+    NAME,
     STT_PROVIDER,
 )
 
@@ -125,7 +126,7 @@ async def _validate_input(hass: HomeAssistant, user_input: dict[str, Any]) -> No
             if response.status >= 400:
                 text = await response.text()
                 _LOGGER.warning(
-                    "Maya via Jarvis validation failed with HTTP %s: %s",
+                    "Maya Conversation validation failed with HTTP %s: %s",
                     response.status,
                     text[:300],
                 )
@@ -150,7 +151,7 @@ async def _validate_input(hass: HomeAssistant, user_input: dict[str, Any]) -> No
 
 
 class MayaConversationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Maya via Jarvis."""
+    """Handle a config flow for Maya Conversation."""
 
     VERSION = 1
 
@@ -175,12 +176,11 @@ class MayaConversationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except InvalidAuth:
                 errors["base"] = "invalid_auth"
             except Exception:
-                _LOGGER.exception("Unexpected exception during Maya via Jarvis setup")
+                _LOGGER.exception("Unexpected exception during Maya Conversation setup")
                 errors["base"] = "unknown"
             else:
-                agent_title = user_input[CONF_AGENT].replace("_", " ").title()
                 return self.async_create_entry(
-                    title=f"{agent_title} via Jarvis",
+                    title=NAME,
                     data=user_input,
                 )
 
