@@ -14,7 +14,6 @@ from homeassistant.components import conversation
 from homeassistant.components.conversation import AssistantContent, ChatLog
 from homeassistant.components.homeassistant.exposed_entities import (
     async_get_assistant_settings,
-    async_should_expose,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import MATCH_ALL
@@ -205,21 +204,20 @@ class MayaConversationEntity(conversation.ConversationEntity):
         )
 
     async def _async_build_exposed_entities_snapshot(self) -> dict[str, object]:
-        """Capture the latest Assist-exposed entities for Jarvis Brain."""
+        """Capture the explicit Assist-exposed entities for Jarvis Brain."""
         entity_registry = er.async_get(self.hass)
         device_registry = dr.async_get(self.hass)
         area_registry = ar.async_get(self.hass)
         label_registry = lr.async_get(self.hass)
         assistant_settings = async_get_assistant_settings(self.hass, conversation.DOMAIN)
-        candidate_entity_ids = set(entity_registry.entities)
-        candidate_entity_ids.update(assistant_settings)
-        candidate_entity_ids.update(state.entity_id for state in self.hass.states.async_all())
+        candidate_entity_ids = {
+            entity_id
+            for entity_id, settings in assistant_settings.items()
+            if settings.get("should_expose") is True
+        }
         entities: list[dict[str, object]] = []
 
         for entity_id in candidate_entity_ids:
-            if not async_should_expose(self.hass, conversation.DOMAIN, entity_id):
-                continue
-
             state = self.hass.states.get(entity_id)
             registry_entry = entity_registry.async_get(entity_id)
             area_name = None

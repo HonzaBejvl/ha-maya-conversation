@@ -31,8 +31,8 @@ The repository layout is HACS-ready:
 - Returns Jarvis speech back to Home Assistant
 - Passes through `conversationId`, `language`, `deviceId`, and
   `sttProvider=home-assistant`
-- Captures the current Assist-exposed entities snapshot and sends it with each
-  voice turn so Jarvis Brain can upsert the linked home's latest view
+- Captures the explicit Assist-exposed entities snapshot and sends it with
+  each voice turn so Jarvis Brain can upsert the linked home's latest view
 
 ## Current Backend Contract
 
