@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
 import voluptuous as vol
 
@@ -36,11 +37,20 @@ class InvalidAuth(Exception):
     """Error to indicate the provided voice token was rejected."""
 
 
+class InvalidUrl(Exception):
+    """Error to indicate the provided backend URL is missing or malformed."""
+
+
 def _resolve_url(url: str | None) -> str:
     """Resolve and normalize the Jarvis Brain base URL."""
     cleaned = (url or "").strip().rstrip("/")
     if not cleaned:
-        raise CannotConnect
+        raise InvalidUrl
+
+    parsed = urlparse(cleaned)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise InvalidUrl
+
     return cleaned
 
 
@@ -162,27 +172,30 @@ class MayaConversationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            user_input, resolved_url = _normalize_input(user_input)
-
-            await self.async_set_unique_id(
-                f"{resolved_url}|{user_input[CONF_AGENT]}"
-            )
-            self._abort_if_unique_id_configured()
-
             try:
-                await _validate_input(self.hass, user_input)
-            except CannotConnect:
-                errors["base"] = "cannot_connect"
-            except InvalidAuth:
-                errors["base"] = "invalid_auth"
-            except Exception:
-                _LOGGER.exception("Unexpected exception during Maya Conversation setup")
-                errors["base"] = "unknown"
+                user_input, resolved_url = _normalize_input(user_input)
+            except InvalidUrl:
+                errors[CONF_URL] = "invalid_url"
             else:
-                return self.async_create_entry(
-                    title=NAME,
-                    data=user_input,
+                await self.async_set_unique_id(
+                    f"{resolved_url}|{user_input[CONF_AGENT]}"
                 )
+                self._abort_if_unique_id_configured()
+
+                try:
+                    await _validate_input(self.hass, user_input)
+                except CannotConnect:
+                    errors["base"] = "cannot_connect"
+                except InvalidAuth:
+                    errors["base"] = "invalid_auth"
+                except Exception:
+                    _LOGGER.exception("Unexpected exception during Maya Conversation setup")
+                    errors["base"] = "unknown"
+                else:
+                    return self.async_create_entry(
+                        title=NAME,
+                        data=user_input,
+                    )
 
         return self.async_show_form(
             step_id="user",
