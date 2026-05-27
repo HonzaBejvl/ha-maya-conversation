@@ -3,7 +3,7 @@
   "name": "Maya Conversation",
   "codeowners": ["@HonzaBejvl"],
   "config_flow": true,
-  "dependencies": ["conversation"],
+  "dependencies": ["conversation", "http"],
   "documentation": "https://github.com/HonzaBejvl/ha-maya-conversation",
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/HonzaBejvl/ha-maya-conversation/issues",
