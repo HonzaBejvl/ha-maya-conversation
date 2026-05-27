@@ -33,6 +33,9 @@ The repository layout is HACS-ready:
   `sttProvider=home-assistant`
 - Captures the explicit Assist-exposed entities snapshot and sends it with
   each voice turn so Jarvis Brain can upsert the linked home's latest view
+- Exposes an authenticated Home Assistant endpoint at
+  `GET /api/maya_conversation/exposed_entities_snapshot` so Jarvis Brain can
+  fetch the same prebuilt snapshot in one request for non-voice turns
 
 ## Current Backend Contract
 
