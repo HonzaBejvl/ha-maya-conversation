@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -12,13 +14,26 @@ from .views import MayaExposedEntitiesSnapshotView
 PLATFORMS: list[Platform] = [Platform.CONVERSATION]
 
 
+def _ensure_snapshot_view_registered(hass: HomeAssistant) -> None:
+    domain_data = hass.data.setdefault(DOMAIN, {})
+    if domain_data.get("snapshot_view_registered"):
+        return
+
+    hass.http.register_view(MayaExposedEntitiesSnapshotView(hass))
+    domain_data["snapshot_view_registered"] = True
+
+
+async def async_setup(
+    hass: HomeAssistant, config: Mapping[str, object]
+) -> bool:
+    """Set up Maya Conversation integration."""
+    _ensure_snapshot_view_registered(hass)
+    return True
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Maya Conversation from a config entry."""
-    domain_data = hass.data.setdefault(DOMAIN, {})
-    if not domain_data.get("snapshot_view_registered"):
-        hass.http.register_view(MayaExposedEntitiesSnapshotView(hass))
-        domain_data["snapshot_view_registered"] = True
-
+    _ensure_snapshot_view_registered(hass)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
